@@ -307,6 +307,76 @@ body {
     <script type="text/javascript">     (function(c,l,a,r,i,t,y){         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);     })(window, document, "clarity", "script", "wxpa3juvvs"); </script>
 </head>
 <body>
+<style>
+#password-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #F4F4F4;
+  display: flex; align-items: center; justify-content: center;
+}
+#password-box {
+  background: white; border-radius: 16px;
+  padding: 40px; display: flex; flex-direction: column;
+  align-items: center; gap: 20px; width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.1);
+}
+#password-box h2 {
+  font-family: -apple-system, sans-serif;
+  font-size: 20px; font-weight: 700; color: #2D3137; margin: 0;
+}
+#password-input {
+  width: 100%; border: 1px solid #E5E5E5; border-radius: 12px;
+  padding: 14px 16px; font-size: 16px; font-family: inherit;
+  outline: none; text-align: center; letter-spacing: 2px;
+  transition: border-color .15s; box-sizing: border-box;
+}
+#password-input:focus { border-color: #4086E4; }
+#password-input.error { border-color: #CE2121; animation: shake .3s; }
+#password-btn {
+  width: 100%; background: #FDDD55; border: none; border-radius: 12px;
+  height: 48px; font-size: 16px; font-weight: 500; cursor: pointer;
+  font-family: inherit;
+}
+#password-error {
+  font-size: 13px; color: #CE2121; display: none; margin-top: -8px;
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+</style>
+<div id="password-screen">
+  <div id="password-box">
+    <h2>Enter password</h2>
+    <input id="password-input" type="password" placeholder="••••••••" autocomplete="off">
+    <div id="password-error">Wrong password, try again</div>
+    <button id="password-btn">Continue</button>
+  </div>
+</div>
+<script>
+(function() {
+  var PASS = '03062026';
+  var input = document.getElementById('password-input');
+  var btn   = document.getElementById('password-btn');
+  var err   = document.getElementById('password-error');
+  var screen = document.getElementById('password-screen');
+  function attempt() {
+    if (input.value === PASS) {
+      screen.style.display = 'none';
+    } else {
+      input.classList.add('error');
+      err.style.display = 'block';
+      setTimeout(function(){ input.classList.remove('error'); }, 400);
+      input.value = '';
+      input.focus();
+    }
+  }
+  btn.addEventListener('click', attempt);
+  input.addEventListener('keydown', function(e){ if(e.key === 'Enter') attempt(); });
+  input.focus();
+})();
+</script>
+
 <div class="page">
 
 <!-- TOPBAR -->
