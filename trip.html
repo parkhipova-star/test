@@ -13,73 +13,41 @@
   .screen { width: 1440px; margin: 0 auto; }
   .screen.hidden { display: none; }
 
-  /* ══ MAIN PAGE ══ */
   .main-page { width: 1440px; position: relative; }
   .main-screenshot { display: block; width: 1440px; height: auto; }
 
-  /* FAB — fixed to viewport bottom-right */
   .ai-fab {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    width: 48px; height: 48px;
-    background: #000;
-    border-radius: 50%;
+    position: fixed; bottom: 28px; right: 28px;
+    width: 48px; height: 48px; background: #000; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.28);
-    border: none;
-    transition: transform 0.15s;
-    z-index: 100;
+    cursor: pointer; box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    border: none; transition: transform 0.15s; z-index: 100;
   }
   .ai-fab:hover { transform: scale(1.08); }
 
-  /* CHAT — fixed to viewport bottom-right */
   .chat-overlay {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 400px;
-    background: #fff;
-    border-radius: 22px;
+    position: fixed; bottom: 24px; right: 24px; width: 400px;
+    background: #fff; border-radius: 22px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    z-index: 100;
+    display: flex; flex-direction: column; overflow: hidden; z-index: 100;
     animation: slideUp 0.22s ease;
   }
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes slideUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 
   .chat-header {
-    border-bottom: 1px solid #e5e5e5;
-    padding: 0 16px; height: 62px;
-    display: flex; align-items: center; gap: 10px;
-    flex-shrink: 0;
+    border-bottom: 1px solid #e5e5e5; padding: 0 16px; height: 62px;
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
   }
-  .chat-avatar {
-    width: 34px; height: 34px; background: #000; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
+  .chat-avatar { width: 34px; height: 34px; background: #000; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .chat-title { flex: 1; }
   .chat-name { font-size: 13px; font-weight: 700; color: #2d3137; }
   .chat-status { display: flex; align-items: center; gap: 5px; margin-top: 2px; }
   .dot-green { width: 6px; height: 6px; background: #05df72; border-radius: 50%; }
   .status-label { font-size: 11px; color: #868686; }
-  .chat-close {
-    width: 26px; height: 26px; background: #f4f4f4; border-radius: 8px;
-    border: none; cursor: pointer; font-size: 12px; color: #868686;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
+  .chat-close { width: 26px; height: 26px; background: #f4f4f4; border-radius: 8px; border: none; cursor: pointer; font-size: 12px; color: #868686; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .chat-close:hover { background: #e5e5e5; }
 
-  .chat-msgs {
-    height: 390px; overflow-y: auto;
-    padding: 16px; display: flex; flex-direction: column; gap: 12px;
-  }
+  .chat-msgs { height: 390px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
   .chat-msgs::-webkit-scrollbar { width: 4px; }
   .chat-msgs::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 2px; }
 
@@ -112,7 +80,6 @@
   .tbtn.purple { background: #8b1fff; color: #fff; border-color: #8b1fff; }
 
   .trip-layout { display: flex; gap: 24px; padding: 24px 40px; max-width: 1200px; margin: 0 auto; }
-
   .sidebar { width: 220px; flex-shrink: 0; }
   .scard { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
   .scard-top { background: #f8f8f8; padding: 14px 16px; border-bottom: 1px solid #f0f0f0; }
@@ -128,12 +95,10 @@
   .s-add-btn { height: 28px; padding: 0 9px; border: 1px solid #e5e5e5; border-radius: 6px; font-size: 12px; background: #fff; cursor: default; display: flex; align-items: center; }
 
   .trip-main { flex: 1; min-width: 0; }
-
   .ai-strip { background: rgba(139,31,255,0.07); border: 1px solid rgba(139,31,255,0.18); border-radius: 10px; padding: 9px 14px; font-size: 12px; color: #8b1fff; display: flex; align-items: center; gap: 7px; margin-bottom: 14px; }
   .ai-dot { width: 6px; height: 6px; background: #8b1fff; border-radius: 50%; flex-shrink: 0; }
 
   .card { background: #fff; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 14px; overflow: hidden; }
-
   .cover { height: 130px; background: linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); position: relative; display: flex; align-items: flex-end; padding: 16px 22px; }
   .cover-city { font-size: 24px; font-weight: 700; color: #fff; }
   .cover-dates { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 2px; }
@@ -158,7 +123,6 @@
   .settings-note { font-size: 11px; color: #868686; margin-top: 10px; border-top: 1px solid #f4f4f4; padding-top: 8px; }
 
   .loc-strip { background: #fff; border-radius: 14px; padding: 12px 22px; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); font-size: 13px; color: #2d3137; }
-
   .sec-head { display: flex; align-items: center; justify-content: space-between; padding: 13px 22px; border-bottom: 1px solid #f4f4f4; }
   .sec-head-l { display: flex; align-items: center; gap: 8px; }
   .sec-title { font-size: 13px; font-weight: 700; color: #2d3137; }
@@ -311,14 +275,14 @@
   </div>
 </div>
 
-<!-- FAB — fixed, always visible on screen-main -->
+<!-- FAB -->
 <button class="ai-fab" id="fab-btn" onclick="openChat()" title="RateHawk AI Assistant">
   <svg width="22" height="20" viewBox="0 0 20 18" fill="none">
     <path d="M17.5 0h-15C1.1 0 0 1.1 0 2.5v10C0 13.9 1.1 15 2.5 15H5l5 3 5-3h2.5c1.4 0 2.5-1.1 2.5-2.5v-10C20 1.1 18.9 0 17.5 0zM10 11.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3-5H7a1 1 0 1 1 0-2h6a1 1 0 1 1 0 2z" fill="white"/>
   </svg>
 </button>
 
-<!-- CHAT — fixed, always visible when open -->
+<!-- CHAT -->
 <div class="chat-overlay" id="chat-panel" style="display:none;">
   <div class="chat-header">
     <div class="chat-avatar">
@@ -370,7 +334,8 @@
     var p = document.getElementById("chat-panel");
     p.style.display = "flex";
     p.style.flexDirection = "column";
-    setTimeout(function(){ document.getElementById("chat-msgs").scrollTop = 99999; }, 60);
+    // scroll to top so conversation starts from the beginning
+    document.getElementById("chat-msgs").scrollTop = 0;
   }
   function closeChat() {
     document.getElementById("chat-panel").style.display = "none";
@@ -379,17 +344,13 @@
   function goToTrip() {
     document.getElementById("screen-main").classList.add("hidden");
     document.getElementById("screen-trip").classList.remove("hidden");
-    document.getElementById("chat-panel").style.display = "none";
-    document.getElementById("fab-btn").style.display = "none";
-    window.scrollTo(0,0);
+    // chat stays visible — no changes to chat-panel or fab-btn
+    window.scrollTo(0, 0);
   }
   function goBack() {
     document.getElementById("screen-trip").classList.add("hidden");
     document.getElementById("screen-main").classList.remove("hidden");
-    var p = document.getElementById("chat-panel");
-    p.style.display = "flex";
-    p.style.flexDirection = "column";
-    document.getElementById("fab-btn").style.display = "none";
+    window.scrollTo(0, 0);
   }
 </script>
 </body>
