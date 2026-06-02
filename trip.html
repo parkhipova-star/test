@@ -6,6 +6,16 @@
 <title>RateHawk AI Trip Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9,400;9,700;14,400;14,700&display=swap">
+
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "x0rsxilxfq");
+</script>
+
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { min-width: 1440px; background: #e0e0e0; font-family: "DM Sans", sans-serif; }
@@ -16,6 +26,7 @@
   .main-page { width: 1440px; position: relative; }
   .main-screenshot { display: block; width: 1440px; height: auto; }
 
+  /* ── FAB ── */
   .ai-fab {
     position: fixed; bottom: 28px; right: 28px;
     width: 48px; height: 48px; background: #000; border-radius: 50%;
@@ -25,6 +36,7 @@
   }
   .ai-fab:hover { transform: scale(1.08); }
 
+  /* ── CHAT ── */
   .chat-overlay {
     position: fixed; bottom: 24px; right: 24px; width: 400px;
     background: #fff; border-radius: 22px;
@@ -34,10 +46,7 @@
   }
   @keyframes slideUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 
-  .chat-header {
-    border-bottom: 1px solid #e5e5e5; padding: 0 16px; height: 62px;
-    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
-  }
+  .chat-header { border-bottom: 1px solid #e5e5e5; padding: 0 16px; height: 62px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
   .chat-avatar { width: 34px; height: 34px; background: #000; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .chat-title { flex: 1; }
   .chat-name { font-size: 13px; font-weight: 700; color: #2d3137; }
@@ -70,7 +79,35 @@
   .input-wrap input { flex: 1; border: none; outline: none; font-size: 13px; color: #6a7282; background: transparent; font-family: inherit; }
   .send-btn { width: 32px; height: 32px; background: #8b1fff; border-radius: 10px; border: none; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-  /* ══ TRIP PAGE ══ */
+  /* ── LOADING OVERLAY ── */
+  .loading-overlay {
+    position: fixed; inset: 0; background: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 200; opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .loading-overlay.visible { opacity: 1; pointer-events: all; }
+  .loading-overlay.fade-out { opacity: 0; }
+
+  .loading-logo {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 18px; font-weight: 700; color: #2d3137; letter-spacing: -0.3px;
+    margin-bottom: 32px;
+  }
+  .loading-logo-icon { width: 32px; height: 32px; background: #fddd55; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+
+  .loading-bar-wrap { width: 280px; height: 3px; background: #f0f0f0; border-radius: 2px; overflow: hidden; margin-bottom: 16px; }
+  .loading-bar { height: 100%; background: #8b1fff; border-radius: 2px; width: 0%; transition: width 0.1s linear; }
+
+  .loading-steps { display: flex; flex-direction: column; gap: 6px; width: 280px; }
+  .loading-step { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #868686; opacity: 0; transition: opacity 0.3s ease; }
+  .loading-step.visible { opacity: 1; }
+  .loading-step.done { color: #2d3137; }
+  .step-icon { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #d0d0d0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; transition: all 0.2s; }
+  .loading-step.done .step-icon { background: #8b1fff; border-color: #8b1fff; color: #fff; }
+  .loading-step.active .step-icon { border-color: #8b1fff; }
+
+  /* ── TRIP PAGE ── */
   .trip-page { background: #f4f4f4; min-height: 100vh; width: 1440px; }
   .trip-topbar { background: #fff; height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; border-bottom: 1px solid #e5e5e5; position: sticky; top: 0; z-index: 10; }
   .back-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #2d3137; cursor: pointer; background: none; border: none; font-family: inherit; }
@@ -161,6 +198,35 @@
 </style>
 </head>
 <body>
+
+<!-- ══ LOADING OVERLAY ══ -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-logo">
+    <div class="loading-logo-icon">✈</div>
+    RATEHAWK
+  </div>
+  <div class="loading-bar-wrap">
+    <div class="loading-bar" id="loading-bar"></div>
+  </div>
+  <div class="loading-steps">
+    <div class="loading-step" id="step-1">
+      <div class="step-icon" id="step-icon-1"></div>
+      Matching rates from inventory…
+    </div>
+    <div class="loading-step" id="step-2">
+      <div class="step-icon" id="step-icon-2"></div>
+      Checking hotel availability…
+    </div>
+    <div class="loading-step" id="step-3">
+      <div class="step-icon" id="step-icon-3"></div>
+      Confirming transfer options…
+    </div>
+    <div class="loading-step" id="step-4">
+      <div class="step-icon" id="step-icon-4"></div>
+      Building your trip…
+    </div>
+  </div>
+</div>
 
 <!-- ══ SCREEN 1: MAIN ══ -->
 <div class="screen" id="screen-main">
@@ -334,19 +400,69 @@
     var p = document.getElementById("chat-panel");
     p.style.display = "flex";
     p.style.flexDirection = "column";
-    // scroll to top so conversation starts from the beginning
     document.getElementById("chat-msgs").scrollTop = 0;
   }
+
   function closeChat() {
     document.getElementById("chat-panel").style.display = "none";
     document.getElementById("fab-btn").style.display = "flex";
   }
+
   function goToTrip() {
-    document.getElementById("screen-main").classList.add("hidden");
-    document.getElementById("screen-trip").classList.remove("hidden");
-    // chat stays visible — no changes to chat-panel or fab-btn
-    window.scrollTo(0, 0);
+    var overlay = document.getElementById("loading-overlay");
+    var bar = document.getElementById("loading-bar");
+
+    // Show overlay
+    overlay.classList.add("visible");
+
+    var steps = [
+      { id: "step-1", icon: "step-icon-1", delay: 0,    barEnd: 25  },
+      { id: "step-2", icon: "step-icon-2", delay: 600,  barEnd: 52  },
+      { id: "step-3", icon: "step-icon-3", delay: 1150, barEnd: 78  },
+      { id: "step-4", icon: "step-icon-4", delay: 1750, barEnd: 100 }
+    ];
+
+    steps.forEach(function(s, i) {
+      // Show step text
+      setTimeout(function() {
+        var el = document.getElementById(s.id);
+        el.classList.add("visible", "active");
+        bar.style.width = s.barEnd + "%";
+      }, s.delay);
+
+      // Mark as done after next step starts (or at end)
+      var doneDelay = (i < steps.length - 1) ? steps[i+1].delay - 100 : s.delay + 400;
+      setTimeout(function() {
+        var el = document.getElementById(s.id);
+        el.classList.remove("active");
+        el.classList.add("done");
+        document.getElementById(s.icon).innerHTML = "✓";
+      }, doneDelay);
+    });
+
+    // Switch to trip screen after loading
+    setTimeout(function() {
+      document.getElementById("screen-main").classList.add("hidden");
+      document.getElementById("screen-trip").classList.remove("hidden");
+      window.scrollTo(0, 0);
+
+      // Fade out overlay
+      overlay.classList.add("fade-out");
+      setTimeout(function() {
+        overlay.classList.remove("visible", "fade-out");
+        // Reset steps for next time
+        steps.forEach(function(s) {
+          var el = document.getElementById(s.id);
+          el.classList.remove("visible", "active", "done");
+          document.getElementById(s.icon).innerHTML = "";
+        });
+        bar.style.width = "0%";
+        bar.style.transition = "none";
+        setTimeout(function(){ bar.style.transition = "width 0.1s linear"; }, 50);
+      }, 300);
+    }, 2400);
   }
+
   function goBack() {
     document.getElementById("screen-trip").classList.add("hidden");
     document.getElementById("screen-main").classList.remove("hidden");
